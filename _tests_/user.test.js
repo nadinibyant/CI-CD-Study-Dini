@@ -16,7 +16,7 @@ describe('POST /register', () => {
     it('harus mengembalikan 400 jika username atau password kosong', async () => {
         const res = await request(app)
             .post('/register')
-            .send({ username: '', password: '' });  // Kirim data kosong
+            .send({ username: "", password: "" });  // Kirim data kosong
 
         expect(res.status).toBe(400);
         expect(res.body.message).toBe('Silahkan lengkapi inputan anda');
