@@ -3,7 +3,7 @@ name: CI/CD with Testing for Google Cloud Run
 on:
   push:
     branches:
-      - main 
+      - main
 
 jobs:
   build-and-test:
@@ -42,18 +42,20 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t gcr.io/${{ secrets.GCP_PROJECT_ID }}/my-app:$GITHUB_SHA .
+          docker build -t us-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/my-repo/my-app:$GITHUB_SHA .
 
-      - name: Push Docker image to Google Container Registry
+      - name: Authenticate Docker to Google Artifact Registry
         run: |
-          gcloud auth configure-docker
-          docker push gcr.io/${{ secrets.GCP_PROJECT_ID }}/my-app:$GITHUB_SHA
+          gcloud auth print-access-token | docker login -u oauth2accesstoken --password-stdin https://us-docker.pkg.dev
+
+      - name: Push Docker image to Artifact Registry
+        run: |
+          docker push us-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/my-repo/my-app:$GITHUB_SHA
 
       - name: Deploy to Google Cloud Run
         run: |
           gcloud run deploy my-app \
-            --image gcr.io/${{ secrets.GCP_PROJECT_ID }}/my-app:$GITHUB_SHA \
+            --image us-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/my-repo/my-app:$GITHUB_SHA \
             --platform managed \
             --region asia-southeast2 \
             --allow-unauthenticated
-
