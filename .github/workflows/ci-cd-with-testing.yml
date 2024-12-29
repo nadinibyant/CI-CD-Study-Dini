@@ -1,3 +1,10 @@
+name: CI/CD with Testing for Google Cloud Run
+
+on:
+  push:
+    branches:
+      - main 
+
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
@@ -49,3 +56,4 @@ jobs:
             --platform managed \
             --region asia-southeast2 \
             --allow-unauthenticated
+
