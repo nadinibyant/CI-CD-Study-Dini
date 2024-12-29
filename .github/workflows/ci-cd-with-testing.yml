@@ -44,9 +44,12 @@ jobs:
         run: |
           docker build -t gcr.io/${{ secrets.GCP_PROJECT_ID }}/my-app:$GITHUB_SHA .
 
-      - name: Push Docker image to Google Artifact Registry
+      - name: Authenticate Docker to Google Artifact Registry
         run: |
-          gcloud auth configure-docker asia-southeast2-docker.pkg.dev
+          gcloud auth print-access-token | docker login -u oauth2accesstoken --password-stdin https://asia-southeast2-docker.pkg.dev
+
+      - name: Push Docker image to Artifact Registry
+        run: |
           docker push asia-southeast2-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/my-repo/my-app:$GITHUB_SHA
 
       - name: Deploy to Google Cloud Run
