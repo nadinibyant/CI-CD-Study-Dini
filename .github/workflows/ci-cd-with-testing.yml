@@ -6,27 +6,23 @@ on:
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
-    permissions:
-      contents: 'read'
-      id-token: 'write'
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
 
+      # Perbaikan di bagian Google Cloud authentication
       - name: Google Auth
         id: auth
         uses: 'google-github-actions/auth@v1'
         with:
           credentials_json: '${{ secrets.GCP_CREDENTIALS }}'
-          token_format: 'access_token'
           
       - name: Set up Google Cloud CLI
         uses: google-github-actions/setup-gcloud@v2
         with:
           project_id: ${{ secrets.GCP_PROJECT_ID }}
-          install_components: 'docker-credential-gcr'
           
+      # Tambahkan konfigurasi untuk Artifact Registry
       - name: Configure Docker for Artifact Registry
         run: |
           gcloud auth configure-docker asia-southeast2-docker.pkg.dev --quiet
