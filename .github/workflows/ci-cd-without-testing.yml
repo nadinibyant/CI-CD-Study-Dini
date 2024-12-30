@@ -1,4 +1,4 @@
-name: CI/CD with Testing for Google Cloud Run
+name: CI/CD without Testing for Google Cloud Run
 on:
   push:
     branches:
