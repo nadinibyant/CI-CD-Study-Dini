@@ -7,11 +7,26 @@ const bcrypt = require('bcrypt');
 jest.mock('../models/user');
 jest.mock('bcrypt');
 jest.mock('jsonwebtoken');
+jest.setTimeout(10000);
 
 // Mock bcrypt hashSync
 bcrypt.hashSync = jest.fn().mockReturnValue('mockHashedPassword');
 
 const db = require('../config/db');
+
+beforeAll(async () => {
+    await db.authenticate();
+  });
+
+  afterAll(async () => {
+    await db.close();
+  });
+
+  beforeEach(async () => {
+    // Clear database atau setup data test
+    await db.sync({ force: true });
+  });
+
 
 // Tes Register
 describe('POST /register', () => {
@@ -49,9 +64,4 @@ describe('POST /register', () => {
         expect(res.status).toBe(200);
         expect(res.body.message).toBe('Akun berhasil ditambahkan');
     });
-});
-
-afterAll(async () => {
-    await db.close(); 
-    console.log('Koneksi database ditutup.');
 });
