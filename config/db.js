@@ -7,6 +7,8 @@ const db = new Sequelize(process.env.DB_NAME, process.env.DB_USER, process.env.D
     timezone: '+07:00',
     logging: false,
     dialectOptions: {
+        charset: 'utf8mb4',
+        collate: 'utf8mb4_unicode_ci',
         connectTimeout: 30000
     },
     pool: {
@@ -17,16 +19,21 @@ const db = new Sequelize(process.env.DB_NAME, process.env.DB_USER, process.env.D
     },
 });
 
-// Pastikan menunggu koneksi berhasil (asynchronous)
-(async function(){
+// Hapus IIFE dan db.close()
+// Buat fungsi untuk mengelola koneksi
+const connectDB = async () => {
     try {
         await db.authenticate();
         console.log('Connection has been established successfully.');
+        return db;
     } catch (error) {
         console.error('Unable to connect to the database:', error);
+        throw error;
     }
-}())
+};
 
-db.close();
-
-module.exports = db;
+// Export both db instance and connect function
+module.exports = {
+    db,
+    connectDB
+};

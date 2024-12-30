@@ -8,8 +8,7 @@
     "test": "jest --forceExit --detectOpenHandles"
   },
   "jest": {
-    "testEnvironment": "node",
-    "setupFilesAfterEnv": ["./__tests__/user.test.js"]
+    "testEnvironment": "node"
   },
   "dependencies": {
     "bcrypt": "^5.1.1",
