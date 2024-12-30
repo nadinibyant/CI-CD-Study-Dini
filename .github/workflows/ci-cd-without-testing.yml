@@ -10,7 +10,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      # Perbaikan di bagian Google Cloud authentication
       - name: Google Auth
         id: auth
         uses: 'google-github-actions/auth@v1'
@@ -22,7 +21,6 @@ jobs:
         with:
           project_id: ${{ secrets.GCP_PROJECT_ID }}
           
-      # Tambahkan konfigurasi untuk Artifact Registry
       - name: Configure Docker for Artifact Registry
         run: |
           gcloud auth configure-docker asia-southeast2-docker.pkg.dev --quiet

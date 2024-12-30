@@ -52,6 +52,6 @@ describe('POST /register', () => {
 });
 
 afterAll(async () => {
-    await db.close();  // Pastikan koneksi ditutup setelah tes selesai
+    await db.close(); 
     console.log('Koneksi database ditutup.');
 });
